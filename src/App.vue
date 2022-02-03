@@ -9,7 +9,7 @@
       </div>
       <div class="list-container">
         <svg
-          @click="clickShowList"
+          @click="toggleList"
           xmlns="http://www.w3.org/2000/svg"
           height="24px"
           viewBox="0 0 24 24"
@@ -22,11 +22,11 @@
           />
         </svg>
         <div class="list-component">
-          <List v-if="showList" :list="list" />
+          <List v-if="showList" />
         </div>
       </div>
     </header>
-    <router-view :books="books" @add="addToList" />
+    <router-view :books="books" />
   </div>
 </template>
 <script>
@@ -36,31 +36,23 @@ export default {
   data() {
     return {
       books: null,
-      showList: false,
-      list: [],
     };
   },
   methods: {
-    addToList(book) {
-      const books = this.list.filter((bo) => bo.Title === book.Title);
-      if (books.length > 0) {
-        return;
-      } else {
-        this.list.push(book);
-      }
-      this.showList = true;
-      setTimeout(() => {
-        this.showList = false;
-      }, 1500);
+    toggleList() {
+      this.$store.commit("toggleList");
     },
-    clickShowList() {
-      this.showList = !this.showList;
+  },
+  computed: {
+    showList() {
+      return this.$store.state.showList;
     },
   },
   mounted() {
-    fetch("/books.json")
-      .then((res) => res.json())
-      .then((data) => (this.books = data));
+    this.$store.dispatch("fetchBooks");
+    // fetch("/books.json")
+    //   .then((res) => res.json())
+    //   .then((data) => (this.books = data));
   },
 };
 </script>

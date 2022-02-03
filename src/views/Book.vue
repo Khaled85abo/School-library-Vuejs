@@ -52,18 +52,23 @@
             </div>
           </div>
         </div>
-        <button @click="$emit('add', book)">Oh, I want to read it!</button>
+        <button @click="addToList(book)">Oh, I want to read it!</button>
       </div>
     </div>
   </div>
 </template>
 <script>
 export default {
-  props: ["books"],
   name: "Book",
   computed: {
     book() {
-      return this.books[this.$route.params.id];
+      return this.$store.state.books[this.$route.params.id];
+    },
+  },
+  methods: {
+    addToList(book) {
+      this.$store.commit("addToList", book);
+      this.$emit("added");
     },
   },
 };
@@ -127,7 +132,7 @@ export default {
       font-size: 0.9rem;
     }
     .info-details {
-      padding: 1rem;
+      padding: 0.5rem;
       background: #2f2f2f;
       display: flex;
       justify-content: space-between;

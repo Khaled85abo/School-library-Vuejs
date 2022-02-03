@@ -29,7 +29,11 @@
 <script>
 export default {
   name: "Books",
-  props: ["books"],
+  computed: {
+    books() {
+      return this.$store.state.books;
+    },
+  },
   methods: {
     showSingleBook(id) {
       this.$router.push(`/book/${id}`);
