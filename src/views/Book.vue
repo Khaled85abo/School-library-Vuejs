@@ -72,12 +72,13 @@ export default {
 <style lang="scss" scoped>
 #book {
   background: #222222;
-  height: 100vh;
+  min-height: 80vh;
   display: grid;
   grid-template-rows: 40px 1fr;
   place-items: center;
   .back-btn-div {
     width: 700px;
+    padding: 1rem;
     margin-top: 2rem;
     .back-btn {
       cursor: pointer;
@@ -99,6 +100,7 @@ export default {
     height: 400px;
     width: 300px;
     background: #a8e2c0;
+    margin: auto;
     display: grid;
     grid-template-columns: 25px 1fr;
     .vertical-line {
@@ -121,6 +123,9 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    p {
+      font-size: 0.9rem;
+    }
     .info-details {
       padding: 1rem;
       background: #2f2f2f;
@@ -140,4 +145,11 @@ export default {
     }
   }
 }
+/* 
+@media (min-width: 768px) {
+  .book-info {
+    display: flex;
+    flex-direction: column;
+  }
+} */
 </style>
