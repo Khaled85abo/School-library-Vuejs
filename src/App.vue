@@ -31,6 +31,7 @@
 </template>
 <script>
 import List from "./components/List.vue";
+import { TOGGLE_LIST, FETCH_BOOKS, ACTIONS_REDUCER } from "./constants";
 export default {
   components: { List },
   data() {
@@ -40,7 +41,7 @@ export default {
   },
   methods: {
     toggleList() {
-      this.$store.commit("toggleList");
+      this.$store.dispatch(ACTIONS_REDUCER, { type: TOGGLE_LIST });
     },
   },
   computed: {
@@ -49,10 +50,7 @@ export default {
     },
   },
   mounted() {
-    this.$store.dispatch("fetchBooks");
-    // fetch("/books.json")
-    //   .then((res) => res.json())
-    //   .then((data) => (this.books = data));
+    this.$store.dispatch(ACTIONS_REDUCER, { type: FETCH_BOOKS });
   },
 };
 </script>

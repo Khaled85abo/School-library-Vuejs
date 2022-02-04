@@ -58,6 +58,7 @@
   </div>
 </template>
 <script>
+import { ACTIONS_REDUCER, ADD_TO_LIST } from "../constants";
 export default {
   name: "Book",
   computed: {
@@ -67,7 +68,10 @@ export default {
   },
   methods: {
     addToList(book) {
-      this.$store.commit("addToList", book);
+      this.$store.dispatch(ACTIONS_REDUCER, {
+        type: ADD_TO_LIST,
+        payload: book,
+      });
       this.$emit("added");
     },
   },

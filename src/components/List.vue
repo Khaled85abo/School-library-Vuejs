@@ -7,6 +7,7 @@
 </template>
 
 <script>
+import { ACTIONS_REDUCER, DELETE_ITEM } from "../constants";
 export default {
   computed: {
     list() {
@@ -16,7 +17,10 @@ export default {
   methods: {
     deleteItem(index) {
       console.log(index);
-      this.$store.commit("deleteItem", index);
+      this.$store.dispatch(ACTIONS_REDUCER, {
+        type: DELETE_ITEM,
+        payload: index,
+      });
     },
   },
 };

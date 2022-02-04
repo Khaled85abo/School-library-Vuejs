@@ -1,6 +1,13 @@
 import Vue from "vue";
 import Vuex from "vuex";
-
+import {
+  SET_BOOKS,
+  ADD_TO_LIST,
+  DELETE_ITEM,
+  TOGGLE_LIST,
+  FETCH_BOOKS,
+  STATE_REDUCER,
+} from "../constants";
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
@@ -10,48 +17,62 @@ const store = new Vuex.Store({
     books: [],
   },
   actions: {
-    fetchBooks(context) {
-      fetch("/books.json")
-        .then((res) => res.json())
-        .then((data) => context.commit("setBooks", data));
-    },
-  },
-  mutations: {
-    mutateState(state, action) {
+    actionsReducer(context, action) {
       switch (action.type) {
-        case "set-books":
-          state.books = action.payload;
+        case FETCH_BOOKS:
+          fetch("/books.json")
+            .then((res) => res.json())
+            .then((data) =>
+              context.commit(STATE_REDUCER, { type: SET_BOOKS, payload: data })
+            );
           break;
-        case "add-to-list":
-          state.list.push(action.payload);
+        case ADD_TO_LIST:
+          context.commit(STATE_REDUCER, {
+            type: ADD_TO_LIST,
+            payload: action.payload,
+          });
           break;
-        case "toggle-list":
-          state.showList = !state.showList;
+        case TOGGLE_LIST:
+          context.commit(STATE_REDUCER, { type: TOGGLE_LIST });
           break;
-        case "delete-item":
-          state.list.splice(action.payload, 1);
+        case DELETE_ITEM:
+          context.commit(STATE_REDUCER, {
+            type: DELETE_ITEM,
+            payload: action.payload,
+          });
           break;
         default:
           break;
       }
     },
-    setBooks(state, payload) {
-      state.books = payload;
-    },
-    addToList(state, book) {
-      const listBook = state.list.filter((bo) => bo.Title === book.Title);
-      if (listBook.length === 0) state.list.push(book);
-
-      state.showList = true;
-      setTimeout(() => {
-        state.showList = false;
-      }, 1500);
-    },
-    toggleList(state) {
-      state.showList = !state.showList;
-    },
-    deleteItem(state, index) {
-      state.list.splice(index, 1);
+  },
+  mutations: {
+    stateReducer(state, action) {
+      switch (action.type) {
+        case SET_BOOKS:
+          state.books = action.payload;
+          break;
+        case ADD_TO_LIST: {
+          const listBook = state.list.filter(
+            (bo) => bo.Title === action.payload.Title
+          );
+          if (listBook.length === 0) state.list.push(action.payload);
+          state.showList = true;
+          setTimeout(() => {
+            state.showList = false;
+          }, 1500);
+          console.log(state.list);
+          break;
+        }
+        case TOGGLE_LIST:
+          state.showList = !state.showList;
+          break;
+        case DELETE_ITEM:
+          state.list.splice(action.payload, 1);
+          break;
+        default:
+          break;
+      }
     },
   },
   // Similar to computed in components.
